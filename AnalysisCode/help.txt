@@ -1,0 +1,60 @@
+
+Pour le code qui entraine le MVA, il se trouve ici : 
+/opt/sbg/cms/ui3_data1/ddarej/MVA_displacedVertices
+les instructions se trouvent dans 
+/opt/sbg/cms/ui3_data1/ddarej//help.txt 
+
+mais faire d'abord:
+
+cd /opt/sbg/cms/ui2_data1/blochd/CMSSW_10_6_20_dumy/src
+
+export V0_CMS_SW_DIR=/cvmfs/cms.cern.ch
+source /cvmfs/cms.cern.ch/cmsset_default.sh
+export SCRAM_ARCH=slc7_amd64_gcc700
+
+eval `scramv1 runtime -sh`
+
+export PYTHONPATH=$PYTHONPATH:/opt/glite/lib64/python:/opt/fpconst/lib/python2.4/site-packages
+export PYTHONPATH=${PYTHONPATH}:${GLITE_LOCATION}/lib64
+cmsenv
+
+
+puis
+cd ../../MVA/AnalysisCode
+
+
+to create the input for the test_MVA.C (MVA trainer), run the loop in runscript.C 
+$root -l runscript.C 
+(change the name of the input file in TreeReader.h (takes as input a ntuple created with TrackingPerf.cc) 
+you can also add the right branches that you want to use as input in your mva trainer later
+output of this is output.root 
+
+
+To train MVA :
+$root -l test_TMVA.C 
+$doTraining()
+
+in test_TMVA.C you can change the name of the input file, add the right input variables, the number of events on which it trains (here event = track) in nTrain_Signal=10000:nTrain_Background=10000
+
+gui interface opens automatically
+in gui : look at classifier cut efficiencies and ROC curves 
+if bug in gui just do :
+$root -l 
+$TMVA::TMVAGui( "mva_training.root" ) 
+
+
+to have the optimal cut  for the MVA :
+launch the gui interface doing :
+$root -l
+$TMVA::TMVAGui( "mva_training.root" )
+go to classifier cut efficencies 
+put the right signal  events and the right background events in the box 
+(typically for displaced top samples, we have 20 signal events for 200 bkg events)
+check on  terminal the optimal cut (make sure it took into account the right number of sig  and bkg events)
+
+
+these cuts are the ones that are used in the ntuple creator (TrackingPerf.cc) to reconstruct vertices from  tracks belonging  to displaced tops.
+the weight files  are also  needed 
+they  can be found in dataset/weights 
+they need to be exported in the same directory as TrackingPerf.cc (TrackingPerf/TrackingPerf/plugins/) when used in the ntuple creator 
+ 
