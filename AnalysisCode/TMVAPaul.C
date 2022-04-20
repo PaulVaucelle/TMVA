@@ -10,8 +10,8 @@ void doTraining(){
     // This loads the library
     TMVA::Tools::Instance();
     
-    TFile *input = new TFile("output70.root");//output is for 5O
-    TFile *input2 = new TFile("output70.root");//
+    TFile *input = new TFile("output.root");//output is for 5O. Better overall training is obtained with 50 
+    TFile *input2 = new TFile("output.root");//
 
     //training
     TTree *signalTree     = (TTree*)input->Get("Signal");
@@ -37,7 +37,7 @@ void doTraining(){
     dataloader->AddVariable( "mva_track_pt", 'F' );
     dataloader->AddVariable( "mva_track_eta", 'F' );
     dataloader->AddVariable( "mva_track_nchi2", 'F' );
-    // dataloader->AddVariable( "mva_track_nhits", 'F' );//exclude variables that higly depend on the flight distance
+    dataloader->AddVariable( "mva_track_nhits", 'F' );//exclude variables that higly depend on the flight distance
     dataloader->AddVariable( "mva_track_algo", 'F');
 
     // added by Paul
@@ -68,11 +68,11 @@ void doTraining(){
     // dataloader->AddSignalTree( signalTree,     signalWeight );//train and test with bgctau50 0.885
     // dataloader->AddBackgroundTree( background, backgroundWeight );
 
-    // dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887
-    // dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );
+    dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887
+    dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );
 
-    // dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );
-    // dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );
+    dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );
+    dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );
 
     //----------------------------------------------------Replace the 4 lines above---------------------------------------//
        // Use the following code instead of the above two or four lines to add signal and background
@@ -148,7 +148,7 @@ void doTraining(){
     // dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
                                         // "nTrain_Signal=10000:nTrain_Background=10000:SplitMode=Random:NormMode=NumEvents:!V" );
     
-    //D
+    //
     // factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
     //      "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
 
