@@ -11,7 +11,7 @@ void doTraining(){
     TMVA::Tools::Instance();
     
     TFile *input = new TFile("output.root");//output is for 5O. Better overall training is obtained with 50 
-    TFile *input2 = new TFile("output.root");//
+    TFile *input2 = new TFile("output.root");//input is for training and input2 is for test
 
     //training
     TTree *signalTree     = (TTree*)input->Get("Signal");
@@ -38,11 +38,11 @@ void doTraining(){
     dataloader->AddVariable( "mva_track_eta", 'F' );
     dataloader->AddVariable( "mva_track_nchi2", 'F' );
     dataloader->AddVariable( "mva_track_nhits", 'F' );//exclude variables that higly depend on the flight distance
-    dataloader->AddVariable( "mva_track_algo", 'F');
+    dataloader->AddVariable( "mva_track_algo", 'F');//12
 
-    // added by Paul
-    // // dataloader->AddVariable( "mva_track_z1", 'F');
-    // // dataloader->AddVariable( "mva_track_r1", 'F');
+// //     added by Paul
+// //     dataloader->AddVariable( "mva_track_z1", 'F');
+// //     dataloader->AddVariable( "mva_track_r1", 'F');
     dataloader->AddVariable( "mva_ntrk10", 'F');
     // dataloader->AddVariable( "mva_ntrk20", 'F');
     // dataloader->AddVariable( "mva_ntrk30", 'F');
@@ -58,21 +58,21 @@ void doTraining(){
     dataloader->AddVariable( "mva_track_isinjet", 'F');
     // dataloader->AddVariable( "mva_ntrk40XX;", 'F');
     // dataloader->AddVariable( "mva_nValTECHHit", 'F');//exclude variables that higly depend on the flight distance
-   
+    //27 variables
     //end of added by Paul
     
     // global event weights per tree (see below for setting event-wise weights)
     Double_t signalWeight     = 1.0;//1.0
     Double_t backgroundWeight = 1.0;//1.0
 
-    // dataloader->AddSignalTree( signalTree,     signalWeight );//train and test with bgctau50 0.885
-    // dataloader->AddBackgroundTree( background, backgroundWeight );
+    dataloader->AddSignalTree( signalTree,     signalWeight );//train and test with bgctau50 0.885
+    dataloader->AddBackgroundTree( background, backgroundWeight );
 
-    dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887
-    dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );
+    // dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887
+    // dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );
 
-    dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );
-    dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );
+    // dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );
+    // dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );
 
     //----------------------------------------------------Replace the 4 lines above---------------------------------------//
        // Use the following code instead of the above two or four lines to add signal and background
@@ -143,18 +143,25 @@ void doTraining(){
     //factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG",
     //     "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
     
+    // ##########the one that shoul be used, for eaqual amoutn of training and test events################//
     dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        "nTrain_Signal=10000:nTrain_Background=10000:SplitMode=Random:NormMode=NumEvents:!V" );
+                                        "SplitMode=Random:NormMode=NumEvents:!V" );
+    // ################################################################################
+
+    // dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
+    //                                     "nTrain_Signal=44790:nTrain_Background=86838:nTest_Signal=44790:nTest_Background=86838:SplitMode=Random:NormMode=NumEvents:!V" );
+    
     // dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
                                         // "nTrain_Signal=10000:nTrain_Background=10000:SplitMode=Random:NormMode=NumEvents:!V" );
     
     //
-    // factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
-    //      "!H:!V:NTrees=850:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
-
+//     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
+//          "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
     //Paul//
     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG",
-         "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=True:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
+         "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=False:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
+//     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG1",
+//          "!H:!V:NTrees=500:MinNodeSize=2.5%:MaxDepth=4:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=True:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
 
    // Now you can tell the factory to train, test, and evaluate the MVAs
    //
@@ -169,21 +176,5 @@ void doTraining(){
    
    if (!gROOT->IsBatch()) TMVA::TMVAGui( outfileName );
 
+
 }
-            //////Parameter tested independantly: (with S= 10 000 and bkg =10000)
-                        // Best ROC obtained is 0.894 (20000,20000, NTrees=1000:MinNodeSize=2.5%:MaxDepth=5:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=True:UseRandomisedTrees=False:DoBoostMonitor=True"
-                        // 
-                        //"!H:!V:NTrees=1000:MinNodeSize=5%:MaxDepth=2:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=True:UseRandomisedTrees=True"
-                        //Putting max depth to higher values does not increase the performances.
-                        //Same goes for MinNodeSize : 5% ~ 2.5%
-                        //Same for shrinkage 0.1->0.3 h\e the decrease begins to be rly noticeable for Shrinkage=0.5 and the performance decreases by a little for higher values ;
-                        //nTree=1000 <=> 2000<=> 500 ~= 200 <=> 100 decreases perf by a little (even 10 is not that bad)
-                        //Nothing changed without using UseBaggedBoost
-                        // ROC = 0.853 with (1000,1000) and more overtraining (visually speaking)
-                        // ROC = 0.873 with (20000,20000) overtraining seems good ,pt is literally not used once.
-                        // ROC = 0.873 with (10 000 , 10 000) with UseRandomisedTrees = False 
-                        //UseRandomisedTrees = False 
-                        // Pour le test de Kolmogorov, voir les conditions : https://root.cern/doc/master/classTH1.html#aeadcf087afe6ba203bcde124cfabbee4
-                        //General Comment: all the parameters above can be less "strict" to save computational time if needed since few parameters can change
-                        // by a large value the ROC value 
-            //////Parameter tested : Adaboost, slightly worse
