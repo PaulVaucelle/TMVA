@@ -69,56 +69,56 @@
    vector<float>   *tree_track_firsthit_Y;
    vector<float>   *tree_track_firsthit_Z;
    vector<float>   *tree_track_firsthit_phi;
-   vector<int>     *tree_track_simtrack_charge;
-   vector<float>   *tree_track_simtrack_pt;
-   vector<float>   *tree_track_simtrack_eta;
-   vector<float>   *tree_track_simtrack_phi;
-   vector<bool>    *tree_track_simtrack_longLived;
-   vector<int>     *tree_track_simtrack_pdgId;
+   //vector<int>     *tree_track_simtrack_charge;
+   //vector<float>   *tree_track_simtrack_pt;
+   //vector<float>   *tree_track_simtrack_eta;
+   //vector<float>   *tree_track_simtrack_phi;
+   //vector<bool>    *tree_track_simtrack_longLived;
+   //vector<int>     *tree_track_simtrack_pdgId;
    vector<int>     *tree_track_simtrack_isFromLLP;
-   vector<int>     *tree_track_simtrack_numberOfTrackerHits;
-   vector<int>     *tree_track_simtrack_numberOfTrackerLayers;
-   vector<float>   *tree_track_simtrack_mass;
-   vector<int>     *tree_track_simtrack_status;
-   vector<float>   *tree_track_genVertexPos_X;
-   vector<float>   *tree_track_genVertexPos_Y;
-   vector<float>   *tree_track_genVertexPos_Z;
+   //vector<int>     *tree_track_simtrack_numberOfTrackerHits;
+   //vector<int>     *tree_track_simtrack_numberOfTrackerLayers;
+   //vector<float>   *tree_track_simtrack_mass;
+   //vector<int>     *tree_track_simtrack_status;
+   //vector<float>   *tree_track_genVertexPos_X;
+   //vector<float>   *tree_track_genVertexPos_Y;
+   //vector<float>   *tree_track_genVertexPos_Z;
    vector<int>     *tree_track_recoVertex_idx;
    vector<int>     *tree_track_recoAK4SlimmedJet_idx;
    vector<int>     *tree_track_recoAK4PFJet_idx;
    vector<int>     *tree_track_reco08Jet_idx;
    vector<int>     *tree_track_recoCaloJet_idx;
-   vector<double>  *tree_track_MVAval_FromDispTop;
-   vector<float>   *tree_secondaryVtx_X;
-   vector<float>   *tree_secondaryVtx_Y;
-   vector<float>   *tree_secondaryVtx_Z;
-   vector<float>   *tree_secondaryVtx_diff_X;
-   vector<float>   *tree_secondaryVtx_diff_Y;
-   vector<float>   *tree_secondaryVtx_diff_Z;
-   vector<int>     *tree_secondaryVtx_nTracks;
-   vector<int>     *tree_secondaryVtx_isValid;
-   vector<float>   *tree_secondaryVtx_NChi2;
-   vector<float>   *tree_secondaryVtx_iterative_X;
-   vector<float>   *tree_secondaryVtx_iterative_Y;
-   vector<float>   *tree_secondaryVtx_iterative_Z;
-   vector<int>     *tree_secondaryVtx_iterative_nTracks;
-   vector<float>   *tree_secondaryVtx_iterative_NChi2;
-   vector<bool>    *tree_secondaryVtx_iterative_isSelected;
-   vector<int>     *tree_simtrack_simtrack_charge;
-   vector<float>   *tree_simtrack_simtrack_pt;
-   vector<float>   *tree_simtrack_simtrack_eta;
-   vector<float>   *tree_simtrack_simtrack_phi;
-   vector<bool>    *tree_simtrack_simtrack_longLived;
-   vector<int>     *tree_simtrack_simtrack_pdgId;
-   vector<float>   *tree_simtrack_simtrack_mass;
-   vector<int>     *tree_simtrack_simtrack_status;
-   vector<float>   *tree_simtrack_genVertexPos_X;
-   vector<float>   *tree_simtrack_genVertexPos_Y;
-   vector<float>   *tree_simtrack_genVertexPos_Z;
-   vector<bool>    *tree_simtrack_isRecoMatched;
-   vector<float>   *tree_simtrack_pca_dxy;
-   vector<float>   *tree_simtrack_pca_dz;
-   vector<vector<int> > *tree_simtrack_trkIdx;
+   //vector<double>  *tree_track_MVAval_FromDispTop;
+   //vector<float>   *tree_secondaryVtx_X;
+   //vector<float>   *tree_secondaryVtx_Y;
+   //vector<float>   *tree_secondaryVtx_Z;
+   //vector<float>   *tree_secondaryVtx_diff_X;
+   //vector<float>   *tree_secondaryVtx_diff_Y;
+   //vector<float>   *tree_secondaryVtx_diff_Z;
+   //vector<int>     *tree_secondaryVtx_nTracks;
+   //vector<int>     *tree_secondaryVtx_isValid;
+   //vector<float>   *tree_secondaryVtx_NChi2;
+   //vector<float>   *tree_secondaryVtx_iterative_X;
+   //vector<float>   *tree_secondaryVtx_iterative_Y;
+   //vector<float>   *tree_secondaryVtx_iterative_Z;
+   //vector<int>     *tree_secondaryVtx_iterative_nTracks;
+   //vector<float>   *tree_secondaryVtx_iterative_NChi2;
+   //vector<bool>    *tree_secondaryVtx_iterative_isSelected;
+   //vector<int>     *tree_simtrack_simtrack_charge;
+   //vector<float>   *tree_simtrack_simtrack_pt;
+   //vector<float>   *tree_simtrack_simtrack_eta;
+   //vector<float>   *tree_simtrack_simtrack_phi;
+   //vector<bool>    *tree_simtrack_simtrack_longLived;
+   //vector<int>     *tree_simtrack_simtrack_pdgId;
+   //vector<float>   *tree_simtrack_simtrack_mass;
+   //vector<int>     *tree_simtrack_simtrack_status;
+   //vector<float>   *tree_simtrack_genVertexPos_X;
+   //vector<float>   *tree_simtrack_genVertexPos_Y;
+   //vector<float>   *tree_simtrack_genVertexPos_Z;
+   //vector<bool>    *tree_simtrack_isRecoMatched;
+   //vector<float>   *tree_simtrack_pca_dxy;
+   //vector<float>   *tree_simtrack_pca_dz;
+   //vector<vector<int> > *tree_simtrack_trkIdx;
    vector<float>   *tree_AK4Slimmedjet_E;
    vector<float>   *tree_AK4Slimmedjet_pt;
    vector<float>   *tree_AK4Slimmedjet_eta;
@@ -198,7 +198,8 @@
    vector<bool>    *tree_slimmedmuon_CutBasedIdMedium;
    vector<bool>    *tree_slimmedmuon_CutBasedIdMediumPrompt;
    vector<bool>    *tree_slimmedmuon_CutBasedIdTight;
-
+   //vector<float>   *tree_Hemi_Strack_dR;
+   
    // List of branches
    TBranch        *b_runNumber;   //!
    TBranch        *b_eventNumber;   //!
@@ -259,56 +260,56 @@
    TBranch        *b_tree_track_firsthit_Y;   //!
    TBranch        *b_tree_track_firsthit_Z;   //!
    TBranch        *b_tree_track_firsthit_phi;   //!
-   TBranch        *b_tree_track_simtrack_charge;   //!
-   TBranch        *b_tree_track_simtrack_pt;   //!
-   TBranch        *b_tree_track_simtrack_eta;   //!
-   TBranch        *b_tree_track_simtrack_phi;   //!
-   TBranch        *b_tree_track_simtrack_longLived;   //!
-   TBranch        *b_tree_track_simtrack_pdgId;   //!
+   //TBranch        *b_tree_track_simtrack_charge;   //!
+   //TBranch        *b_tree_track_simtrack_pt;   //!
+   //TBranch        *b_tree_track_simtrack_eta;   //!
+   //TBranch        *b_tree_track_simtrack_phi;   //!
+   //TBranch        *b_tree_track_simtrack_longLived;   //!
+   //TBranch        *b_tree_track_simtrack_pdgId;   //!
    TBranch        *b_tree_track_simtrack_isFromLLP;   //!
-   TBranch        *b_tree_track_simtrack_numberOfTrackerHits;   //!
-   TBranch        *b_tree_track_simtrack_numberOfTrackerLayers;   //!
-   TBranch        *b_tree_track_simtrack_mass;   //!
-   TBranch        *b_tree_track_simtrack_status;   //!
-   TBranch        *b_tree_track_genVertexPos_X;   //!
-   TBranch        *b_tree_track_genVertexPos_Y;   //!
-   TBranch        *b_tree_track_genVertexPos_Z;   //!
+   //TBranch        *b_tree_track_simtrack_numberOfTrackerHits;   //!
+   //TBranch        *b_tree_track_simtrack_numberOfTrackerLayers;   //!
+   //TBranch        *b_tree_track_simtrack_mass;   //!
+   //TBranch        *b_tree_track_simtrack_status;   //!
+   //TBranch        *b_tree_track_genVertexPos_X;   //!
+   //TBranch        *b_tree_track_genVertexPos_Y;   //!
+   //TBranch        *b_tree_track_genVertexPos_Z;   //!
    TBranch        *b_tree_track_recoVertex_idx;   //!
    TBranch        *b_tree_track_recoAK4SlimmedJet_idx;   //!
    TBranch        *b_tree_track_recoAK4PFJet_idx;   //!
    TBranch        *b_tree_track_reco08Jet_idx;   //!
    TBranch        *b_tree_track_recoCaloJet_idx;   //!
-   TBranch        *b_tree_track_MVAval_FromDispTop;   //!
-   TBranch        *b_tree_secondaryVtx_X;   //!
-   TBranch        *b_tree_secondaryVtx_Y;   //!
-   TBranch        *b_tree_secondaryVtx_Z;   //!
-   TBranch        *b_tree_secondaryVtx_diff_X;   //!
-   TBranch        *b_tree_secondaryVtx_diff_Y;   //!
-   TBranch        *b_tree_secondaryVtx_diff_Z;   //!
-   TBranch        *b_tree_secondaryVtx_nTracks;   //!
-   TBranch        *b_tree_secondaryVtx_isValid;   //!
-   TBranch        *b_tree_secondaryVtx_NChi2;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_X;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_Y;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_Z;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_nTracks;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_NChi2;   //!
-   TBranch        *b_tree_secondaryVtx_iterative_isSelected;   //!
-   TBranch        *b_tree_simtrack_simtrack_charge;   //!
-   TBranch        *b_tree_simtrack_simtrack_pt;   //!
-   TBranch        *b_tree_simtrack_simtrack_eta;   //!
-   TBranch        *b_tree_simtrack_simtrack_phi;   //!
-   TBranch        *b_tree_simtrack_simtrack_longLived;   //!
-   TBranch        *b_tree_simtrack_simtrack_pdgId;   //!
-   TBranch        *b_tree_simtrack_simtrack_mass;   //!
-   TBranch        *b_tree_simtrack_simtrack_status;   //!
-   TBranch        *b_tree_simtrack_genVertexPos_X;   //!
-   TBranch        *b_tree_simtrack_genVertexPos_Y;   //!
-   TBranch        *b_tree_simtrack_genVertexPos_Z;   //!
-   TBranch        *b_tree_simtrack_isRecoMatched;   //!
-   TBranch        *b_tree_simtrack_pca_dxy;   //!
-   TBranch        *b_tree_simtrack_pca_dz;   //!
-   TBranch        *b_tree_simtrack_trkIdx;   //!
+   //TBranch        *b_tree_track_MVAval_FromDispTop;   //!
+   //TBranch        *b_tree_secondaryVtx_X;   //!
+   //TBranch        *b_tree_secondaryVtx_Y;   //!
+   //TBranch        *b_tree_secondaryVtx_Z;   //!
+   //TBranch        *b_tree_secondaryVtx_diff_X;   //!
+   //TBranch        *b_tree_secondaryVtx_diff_Y;   //!
+   //TBranch        *b_tree_secondaryVtx_diff_Z;   //!
+   //TBranch        *b_tree_secondaryVtx_nTracks;   //!
+   //TBranch        *b_tree_secondaryVtx_isValid;   //!
+   //TBranch        *b_tree_secondaryVtx_NChi2;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_X;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_Y;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_Z;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_nTracks;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_NChi2;   //!
+   //TBranch        *b_tree_secondaryVtx_iterative_isSelected;   //!
+   //TBranch        *b_tree_simtrack_simtrack_charge;   //!
+   //TBranch        *b_tree_simtrack_simtrack_pt;   //!
+   //TBranch        *b_tree_simtrack_simtrack_eta;   //!
+   //TBranch        *b_tree_simtrack_simtrack_phi;   //!
+   //TBranch        *b_tree_simtrack_simtrack_longLived;   //!
+   //TBranch        *b_tree_simtrack_simtrack_pdgId;   //!
+   //TBranch        *b_tree_simtrack_simtrack_mass;   //!
+   //TBranch        *b_tree_simtrack_simtrack_status;   //!
+   //TBranch        *b_tree_simtrack_genVertexPos_X;   //!
+   //TBranch        *b_tree_simtrack_genVertexPos_Y;   //!
+   //TBranch        *b_tree_simtrack_genVertexPos_Z;   //!
+   //TBranch        *b_tree_simtrack_isRecoMatched;   //!
+   //TBranch        *b_tree_simtrack_pca_dxy;   //!
+   //TBranch        *b_tree_simtrack_pca_dz;   //!
+   //TBranch        *b_tree_simtrack_trkIdx;   //!
    TBranch        *b_tree_AK4Slimmedjet_E;   //!
    TBranch        *b_tree_AK4Slimmedjet_pt;   //!
    TBranch        *b_tree_AK4Slimmedjet_eta;   //!
@@ -388,6 +389,7 @@
    TBranch        *b_tree_slimmedmuon_CutBasedIdMedium;   //!
    TBranch        *b_tree_slimmedmuon_CutBasedIdMediumPrompt;   //!
    TBranch        *b_tree_slimmedmuon_CutBasedIdTight;   //!
+   //TBranch        *b_tree_Hemi_Strack_dR; //!
  };
 
 

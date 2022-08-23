@@ -58,7 +58,10 @@ void doTraining(){
     dataloader->AddVariable( "mva_track_isinjet", 'F');
     // dataloader->AddVariable( "mva_ntrk40XX;", 'F');
     // dataloader->AddVariable( "mva_nValTECHHit", 'F');//exclude variables that higly depend on the flight distance
-    //27 variables
+
+// dataloader->AddVariable( "mva_track_dR",'F');//New
+// dataloader->AddVariable( "mva_track_dRmax",'F');//New
+
     //end of added by Paul
     
     // global event weights per tree (see below for setting event-wise weights)
@@ -68,65 +71,11 @@ void doTraining(){
     dataloader->AddSignalTree( signalTree,     signalWeight );//train and test with bgctau50 0.885
     dataloader->AddBackgroundTree( background, backgroundWeight );
 
-    // dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887
-    // dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );
+    // dataloader->AddSignalTree    ( signalTree,     signalWeight, "Training" );//train and test with bgctau50 0.887 => -0.0401
+    // dataloader->AddBackgroundTree( background, backgroundWeight,"Training" );//train and test with bgctau50 0.887 => -0.0401
 
-    // dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );
-    // dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );
-
-    //----------------------------------------------------Replace the 4 lines above---------------------------------------//
-       // Use the following code instead of the above two or four lines to add signal and background
-   // training and test events "by hand"
-   // NOTE that in this case one should not give expressions (such as "var1+var2") in the input
-   //      variable definition, but simply compute the expression before adding the event
-   // ```cpp
-   // // --- begin ----------------------------------------------------------
-//    int nbvar = 9;
-//    std::vector<Double_t> vars( nbvar ); // vector has size of number of input variables
-//    Float_t  treevars[nbvar], weight; //Becareful with the size of the arrays
-   
-//    // Signal
-//    signalTree->SetBranchAddress( "mva_track_pt", &(treevars[0]) );
-//    signalTree->SetBranchAddress( "mva_track_eta",&(treevars[1]) );
-//    signalTree->SetBranchAddress( "mva_track_nchi2", &(treevars[2]) );
-//    signalTree->SetBranchAddress( "mva_track_algo", &(treevars[3]) );
-//    signalTree->SetBranchAddress( "mva_ntrk10", &(treevars[4]) );
-//    signalTree->SetBranchAddress( "mva_ntrk20", &(treevars[5]) );
-//    signalTree->SetBranchAddress( "mva_ntrk30", &(treevars[6]) );
-//    signalTree->SetBranchAddress( "mva_drSig", &(treevars[7]) );
-//    signalTree->SetBranchAddress( "mva_track_isinjet", &(treevars[8]) );
-      
-//       for (UInt_t i=0; i<signalTree->GetEntries(); i++) {
-//       signalTree->GetEntry(i);
-//       for (UInt_t ivar=0; ivar<nbvar; ivar++) vars[ivar] = treevars[ivar];
-//       // add training and test events; here: first half is training, second is testing
-//       // note that the weight can also be event-wise
-//       if (i < signalTree->GetEntries()/2.0) dataloader->AddSignalTrainingEvent( vars, signalWeight );
-//       else                              dataloader->AddSignalTestEvent    ( vars, signalWeight );
-//    }
-   
-//    // Background (has event weights)
-//    // background->SetBranchAddress( "weight", &weight );
-//    background->SetBranchAddress( "mva_track_pt", &(treevars[0]) );
-//    background->SetBranchAddress( "mva_track_eta",&(treevars[1]) );
-//    background->SetBranchAddress( "mva_track_nchi2", &(treevars[2]) );
-//    background->SetBranchAddress( "mva_track_algo", &(treevars[3]) );
-//    background->SetBranchAddress( "mva_ntrk10", &(treevars[4]) );
-//    background->SetBranchAddress( "mva_ntrk20", &(treevars[5]) );
-//    background->SetBranchAddress( "mva_ntrk30", &(treevars[6]) );
-//    background->SetBranchAddress( "mva_drSig", &(treevars[7]) );
-//    background->SetBranchAddress( "mva_track_isinjet", &(treevars[8]) );
-//    for (UInt_t i=0; i<background->GetEntries(); i++) {
-//       background->GetEntry(i);
-//       for (UInt_t ivar=0; ivar<nbvar; ivar++) vars[ivar] = treevars[ivar];
-//       // add training and test events; here: first half is training, second is testing
-//       // note that the weight can also be event-wise
-//       if (i < background->GetEntries()/2) dataloader->AddBackgroundTrainingEvent( vars, backgroundWeight );
-//       else                                dataloader->AddBackgroundTestEvent    ( vars, backgroundWeight );
-//    }
-
-
-   ////////////////------------end of replacement-----------------////
+    // dataloader->AddSignalTree    ( signalTreeTest,     signalWeight, "Test" );//train and test with bgctau50 0.887 => -0.0401
+    // dataloader->AddBackgroundTree( backgroundTest, backgroundWeight,"Test" );//train and test with bgctau50 0.887 => -0.0401
     
     // Set individual event weights (the variables must exist in the original TTree)
     // -  for signal    : `
@@ -137,6 +86,8 @@ void doTraining(){
     // Apply additional cuts on the signal and background samples (can be different)
     TCut mycuts = ""; // for example: TCut mycuts = "abs(var1)<0.5 && abs(var2-0.5)<1";
     TCut mycutb = ""; // for example: TCut mycutb = "abs(var1)<0.5";
+    //abs(mva_track_dR)>1.
+    // abs(mva_track_dR)>1.5
     // abs(mva_track_eta)>1.5
     // abs(mva_track_eta)<1.5
     //Jeremy Andrea
@@ -144,7 +95,7 @@ void doTraining(){
     //     "!H:!V:NTrees=1000:MinNodeSize=2.5%:BoostType=Grad:Shrinkage=0.10:UseBaggedBoost:BaggedSampleFraction=0.5:nCuts=20:MaxDepth=2" );
     
     // ##########the one that shoul be used, for eaqual amoutn of training and test events################//
-    dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
+  dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
                                         "SplitMode=Random:NormMode=NumEvents:!V" );
     // ################################################################################
 
@@ -152,16 +103,29 @@ void doTraining(){
     //                                     "nTrain_Signal=44790:nTrain_Background=86838:nTest_Signal=44790:nTest_Background=86838:SplitMode=Random:NormMode=NumEvents:!V" );
     
     // dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,
-                                        // "nTrain_Signal=10000:nTrain_Background=10000:SplitMode=Random:NormMode=NumEvents:!V" );
+    //                                     "nTrain_Signal=10000:nTrain_Background=10000:SplitMode=Random:NormMode=NumEvents:!V" );
     
     //
-//     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
-//          "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
-    //Paul//
+    // factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDT",
+    //      "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=AdaBoost:AdaBoostBeta=0.5:UseBaggedBoost:BaggedSampleFraction=0.5:SeparationType=GiniIndex:nCuts=20" );
+    // Paul//
     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG",
-         "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=3:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=False:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
+         "!H:!V:NTrees=1000:MinNodeSize=2.5%:MaxDepth=4:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=False:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
 //     factory->BookMethod( dataloader, TMVA::Types::kBDT, "BDTG1",
 //          "!H:!V:NTrees=500:MinNodeSize=2.5%:MaxDepth=4:BoostType=Grad:UseBaggedBoost=True:GradBaggingFraction=0.6:Shrinkage=0.1:SeparationType=GiniIndex:nCuts=20:UseYesNoLeaf=True:UseRandomisedTrees=False:DoBoostMonitor=True");//Possible overtraining
+
+////////////////////////////////TEST NEW METHOD OF CLASSIFICATION//////////////////////////////////
+//////SVM////////
+//dataloader->PrepareTrainingAndTestTree( mycuts, mycutb,"nTrain_Signal=4000:nTrain_Background=4000:SplitMode=Random:NormMode=NumEvents:!V" );
+//factory->BookMethod( dataloader, TMVA::Types::kSVM, "SVM",       "!H:!V:Gamma=1:C=3:Tol=0.75:MaxIter=100:VarTransform=Norm" );
+/////////////////
+
+
+/////////////////
+//////DNN////////
+
+////////////////
+
 
    // Now you can tell the factory to train, test, and evaluate the MVAs
    //

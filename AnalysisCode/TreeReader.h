@@ -18,7 +18,7 @@
 //header file for home made classes
 #include "include/TreeFormat.h"
 #include "include/HistoManager.h"
-
+#include "include/DeltaFunc.h"
 #include "vector"
 #include "iostream"
 
@@ -69,6 +69,7 @@ public :
    virtual Long64_t LoadTree(Long64_t entry);
    virtual void     Init(TTree *tree);
    virtual void     Loop();
+   // virtual void     ReadXML();
    virtual Bool_t   Notify();
    virtual void     Show(Long64_t entry = -1);
 
@@ -97,29 +98,33 @@ public :
    float mva_track_dzError;
    float mva_track_pt;
    float mva_track_eta;
+   float mva_track_phi;
    float mva_track_nchi2;
    float mva_track_nhits;
    float mva_track_numberOfValidPixelHits;
    float mva_track_numberOfValidStripHits;
    float mva_track_isinjet;
-   int mva_track_algo;  
+   float mva_track_algo;  
    //added variables by Paul
-   int mva_ntrk10 ;
-   int mva_ntrk20 ; 
-   int mva_ntrk30; 
-   int mva_ntrk40 ;
-   int mva_ntrk1020;
-   int mva_ntrk2030;
+   float mva_ntrk10 ;
+   float mva_ntrk20 ; 
+   float mva_ntrk30; 
+   float mva_ntrk40 ;
+   float mva_ntrk1020;
+   float mva_ntrk2030;
    float mva_drSig ;
    float mva_dzSig;
    float mva_ddSig;
-   int mva_ValTIBHit;
-   int mva_ValTOBHit;
-   int mva_ValPixBarHit;
-   int mva_nValTECHHit;
+   float mva_dd;
+   float mva_ValTIBHit;
+   float mva_ValTOBHit;
+   float mva_ValPixBarHit;
+   float mva_nValTECHHit;
    float mva_ntrk40XX;
-
+   float mva_track_dR;
+   float mva_track_dRmax;
    void LoadTreeSizes(TreeFormat theFormat);
+   void LoadPFJetSize(TreeFormat theFormat);
 };
 
 #endif
@@ -131,17 +136,21 @@ TreeReader::TreeReader(TTree *tree) : fChain(0)
 // if parameter tree is not specified (or zero), connect the file
 // used to generate this class and read the Tree.
    if (tree == 0) {
-      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("UDD_bgctau50_smu275_snu225.root");
+      TFile *f = (TFile*)gROOT->GetListOfFiles()->FindObject("Ntuplebgctau50_090822.root");
       if (!f || !f->IsOpen()) {
-         f = new TFile("/opt/sbg/cms/ui2_data1/pvaucell/LLTopAna/CMSSW_10_6_20/MC/2018/UDD_bgctau50_smu275_snu225.root");
+         f = new TFile("/opt/sbg/cms/ui2_data1/pvaucell/CMSSW_10_6_20_LLP2/src/test_MC/step3/UDD_bgctau50_smu275_snu225/2018_step3_test/0000/Ntuplebgctau50_090822.root");
       }
-      TDirectory * dir = (TDirectory*)f->Get("/opt/sbg/cms/ui2_data1/pvaucell/LLTopAna/CMSSW_10_6_20/MC/2018/UDD_bgctau50_smu275_snu225.root:/trackingPerf");
+      TDirectory * dir = (TDirectory*)f->Get("/opt/sbg/cms/ui2_data1/pvaucell/CMSSW_10_6_20_LLP2/src/test_MC/step3/UDD_bgctau50_smu275_snu225/2018_step3_test/0000/Ntuplebgctau50_090822.root:/trackingPerf");
       dir->GetObject("ttree",tree);
 
    }
+   // /opt/sbg/cms/ui2_data1/pvaucell/CMSSW_10_6_20_LLP2/src/test_MC/step3/UDD_bgctau50_smu275_snu225/2018_step3_test/0000/Ntuplebgctau50dRpi_2.root
    Init(tree);
 }
-
+///opt/sbg/cms/ui2_data1/pvaucell/LLTopAna/CMSSW_10_6_20/MC/2018/UDD_bgctau50_smu275_snu225.root
+// UDD_bgctau70_smu250_snu200.root
+// UDD_bgctau30_smu300_snu250.root
+// UDD_bgctau10_smu250_snu200.root
 
 TreeReader::TreeReader(TString inputfilename, TTree *tree, TString theSampleName){
     if (tree == 0) {
@@ -482,56 +491,58 @@ void TreeReader::Init(TTree *tree)
    fChain->SetBranchAddress("tree_track_firsthit_Y", &theFormat.tree_track_firsthit_Y, &theFormat.b_tree_track_firsthit_Y);
    fChain->SetBranchAddress("tree_track_firsthit_Z", &theFormat.tree_track_firsthit_Z, &theFormat.b_tree_track_firsthit_Z);
    fChain->SetBranchAddress("tree_track_firsthit_phi", &theFormat.tree_track_firsthit_phi, &theFormat.b_tree_track_firsthit_phi);
-   fChain->SetBranchAddress("tree_track_simtrack_charge", &theFormat.tree_track_simtrack_charge, &theFormat.b_tree_track_simtrack_charge);
-   fChain->SetBranchAddress("tree_track_simtrack_pt", &theFormat.tree_track_simtrack_pt, &theFormat.b_tree_track_simtrack_pt);
-   fChain->SetBranchAddress("tree_track_simtrack_eta", &theFormat.tree_track_simtrack_eta, &theFormat.b_tree_track_simtrack_eta);
-   fChain->SetBranchAddress("tree_track_simtrack_phi", &theFormat.tree_track_simtrack_phi, &theFormat.b_tree_track_simtrack_phi);
-   fChain->SetBranchAddress("tree_track_simtrack_longLived", &theFormat.tree_track_simtrack_longLived, &theFormat.b_tree_track_simtrack_longLived);
-   fChain->SetBranchAddress("tree_track_simtrack_pdgId", &theFormat.tree_track_simtrack_pdgId, &theFormat.b_tree_track_simtrack_pdgId);
-   fChain->SetBranchAddress("tree_track_simtrack_isFromLLP", &theFormat.tree_track_simtrack_isFromLLP, &theFormat.b_tree_track_simtrack_isFromLLP);
-   fChain->SetBranchAddress("tree_track_simtrack_numberOfTrackerHits", &theFormat.tree_track_simtrack_numberOfTrackerHits, &theFormat.b_tree_track_simtrack_numberOfTrackerHits);
-   fChain->SetBranchAddress("tree_track_simtrack_numberOfTrackerLayers", &theFormat.tree_track_simtrack_numberOfTrackerLayers, &theFormat.b_tree_track_simtrack_numberOfTrackerLayers);
-   fChain->SetBranchAddress("tree_track_simtrack_mass", &theFormat.tree_track_simtrack_mass, &theFormat.b_tree_track_simtrack_mass);
-   fChain->SetBranchAddress("tree_track_simtrack_status", &theFormat.tree_track_simtrack_status, &theFormat.b_tree_track_simtrack_status);
-   fChain->SetBranchAddress("tree_track_genVertexPos_X", &theFormat.tree_track_genVertexPos_X, &theFormat.b_tree_track_genVertexPos_X);
-   fChain->SetBranchAddress("tree_track_genVertexPos_Y", &theFormat.tree_track_genVertexPos_Y, &theFormat.b_tree_track_genVertexPos_Y);
-   fChain->SetBranchAddress("tree_track_genVertexPos_Z", &theFormat.tree_track_genVertexPos_Z, &theFormat.b_tree_track_genVertexPos_Z);
+  
+  // fChain->SetBranchAddress("tree_track_simtrack_charge", 
+  // &theFormat.tree_track_simtrack_charge, &theFormat.b_tree_track_simtrack_charge);
+  // fChain->SetBranchAddress("tree_track_simtrack_pt", //&theFormat.tree_track_simtrack_pt, &theFormat.b_tree_track_simtrack_pt);
+  // fChain->SetBranchAddress("tree_track_simtrack_eta", //&theFormat.tree_track_simtrack_eta, &theFormat.b_tree_track_simtrack_eta);
+ //  fChain->SetBranchAddress("tree_track_simtrack_phi", //&theFormat.tree_track_simtrack_phi, &theFormat.b_tree_track_simtrack_phi);
+  // fChain->SetBranchAddress("tree_track_simtrack_longLived", //&theFormat.tree_track_simtrack_longLived, &theFormat.b_tree_track_simtrack_longLived);
+  // fChain->SetBranchAddress("tree_track_simtrack_pdgId", //&theFormat.tree_track_simtrack_pdgId, &theFormat.b_tree_track_simtrack_pdgId);
+  fChain->SetBranchAddress("tree_track_simtrack_isFromLLP", &theFormat.tree_track_simtrack_isFromLLP, &theFormat.b_tree_track_simtrack_isFromLLP);
+ //  fChain->SetBranchAddress("tree_track_simtrack_numberOfTrackerHits", //&theFormat.tree_track_simtrack_numberOfTrackerHits, //&theFormat.b_tree_track_simtrack_numberOfTrackerHits);
+  // fChain->SetBranchAddress("tree_track_simtrack_numberOfTrackerLayers", //&theFormat.tree_track_simtrack_numberOfTrackerLayers, //&theFormat.b_tree_track_simtrack_numberOfTrackerLayers);
+  // fChain->SetBranchAddress("tree_track_simtrack_mass", //&theFormat.tree_track_simtrack_mass, &theFormat.b_tree_track_simtrack_mass);
+  // fChain->SetBranchAddress("tree_track_simtrack_status", //&theFormat.tree_track_simtrack_status, &theFormat.b_tree_track_simtrack_status);
+ //  fChain->SetBranchAddress("tree_track_genVertexPos_X", //&theFormat.tree_track_genVertexPos_X, &theFormat.b_tree_track_genVertexPos_X);
+  // fChain->SetBranchAddress("tree_track_genVertexPos_Y", //&theFormat.tree_track_genVertexPos_Y, &theFormat.b_tree_track_genVertexPos_Y);
+ //  fChain->SetBranchAddress("tree_track_genVertexPos_Z", //&theFormat.tree_track_genVertexPos_Z, &theFormat.b_tree_track_genVertexPos_Z);
    fChain->SetBranchAddress("tree_track_recoVertex_idx", &theFormat.tree_track_recoVertex_idx, &theFormat.b_tree_track_recoVertex_idx);
    fChain->SetBranchAddress("tree_track_recoAK4SlimmedJet_idx", &theFormat.tree_track_recoAK4SlimmedJet_idx, &theFormat.b_tree_track_recoAK4SlimmedJet_idx);
    fChain->SetBranchAddress("tree_track_recoAK4PFJet_idx", &theFormat.tree_track_recoAK4PFJet_idx, &theFormat.b_tree_track_recoAK4PFJet_idx);
    fChain->SetBranchAddress("tree_track_reco08Jet_idx", &theFormat.tree_track_reco08Jet_idx, &theFormat.b_tree_track_reco08Jet_idx);
    fChain->SetBranchAddress("tree_track_recoCaloJet_idx", &theFormat.tree_track_recoCaloJet_idx, &theFormat.b_tree_track_recoCaloJet_idx);
-   fChain->SetBranchAddress("tree_track_MVAval_FromDispTop", &theFormat.tree_track_MVAval_FromDispTop, &theFormat.b_tree_track_MVAval_FromDispTop);
-   fChain->SetBranchAddress("tree_secondaryVtx_X", &theFormat.tree_secondaryVtx_X, &theFormat.b_tree_secondaryVtx_X);
-   fChain->SetBranchAddress("tree_secondaryVtx_Y", &theFormat.tree_secondaryVtx_Y, &theFormat.b_tree_secondaryVtx_Y);
-   fChain->SetBranchAddress("tree_secondaryVtx_Z", &theFormat.tree_secondaryVtx_Z, &theFormat.b_tree_secondaryVtx_Z);
-   fChain->SetBranchAddress("tree_secondaryVtx_diff_X", &theFormat.tree_secondaryVtx_diff_X, &theFormat.b_tree_secondaryVtx_diff_X);
-   fChain->SetBranchAddress("tree_secondaryVtx_diff_Y", &theFormat.tree_secondaryVtx_diff_Y, &theFormat.b_tree_secondaryVtx_diff_Y);
-   fChain->SetBranchAddress("tree_secondaryVtx_diff_Z", &theFormat.tree_secondaryVtx_diff_Z, &theFormat.b_tree_secondaryVtx_diff_Z);
-   fChain->SetBranchAddress("tree_secondaryVtx_nTracks", &theFormat.tree_secondaryVtx_nTracks, &theFormat.b_tree_secondaryVtx_nTracks);
-   fChain->SetBranchAddress("tree_secondaryVtx_isValid", &theFormat.tree_secondaryVtx_isValid, &theFormat.b_tree_secondaryVtx_isValid);
-   fChain->SetBranchAddress("tree_secondaryVtx_NChi2", &theFormat.tree_secondaryVtx_NChi2, &theFormat.b_tree_secondaryVtx_NChi2);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_X", &theFormat.tree_secondaryVtx_iterative_X, &theFormat.b_tree_secondaryVtx_iterative_X);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_Y", &theFormat.tree_secondaryVtx_iterative_Y, &theFormat.b_tree_secondaryVtx_iterative_Y);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_Z", &theFormat.tree_secondaryVtx_iterative_Z, &theFormat.b_tree_secondaryVtx_iterative_Z);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_nTracks", &theFormat.tree_secondaryVtx_iterative_nTracks, &theFormat.b_tree_secondaryVtx_iterative_nTracks);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_NChi2", &theFormat.tree_secondaryVtx_iterative_NChi2, &theFormat.b_tree_secondaryVtx_iterative_NChi2);
-   fChain->SetBranchAddress("tree_secondaryVtx_iterative_isSelected", &theFormat.tree_secondaryVtx_iterative_isSelected, &theFormat.b_tree_secondaryVtx_iterative_isSelected);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_charge", &theFormat.tree_simtrack_simtrack_charge, &theFormat.b_tree_simtrack_simtrack_charge);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_pt", &theFormat.tree_simtrack_simtrack_pt, &theFormat.b_tree_simtrack_simtrack_pt);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_eta", &theFormat.tree_simtrack_simtrack_eta, &theFormat.b_tree_simtrack_simtrack_eta);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_phi", &theFormat.tree_simtrack_simtrack_phi, &theFormat.b_tree_simtrack_simtrack_phi);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_longLived", &theFormat.tree_simtrack_simtrack_longLived, &theFormat.b_tree_simtrack_simtrack_longLived);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_pdgId", &theFormat.tree_simtrack_simtrack_pdgId, &theFormat.b_tree_simtrack_simtrack_pdgId);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_mass", &theFormat.tree_simtrack_simtrack_mass, &theFormat.b_tree_simtrack_simtrack_mass);
-   fChain->SetBranchAddress("tree_simtrack_simtrack_status", &theFormat.tree_simtrack_simtrack_status, &theFormat.b_tree_simtrack_simtrack_status);
-   fChain->SetBranchAddress("tree_simtrack_genVertexPos_X", &theFormat.tree_simtrack_genVertexPos_X, &theFormat.b_tree_simtrack_genVertexPos_X);
-   fChain->SetBranchAddress("tree_simtrack_genVertexPos_Y", &theFormat.tree_simtrack_genVertexPos_Y, &theFormat.b_tree_simtrack_genVertexPos_Y);
-   fChain->SetBranchAddress("tree_simtrack_genVertexPos_Z", &theFormat.tree_simtrack_genVertexPos_Z, &theFormat.b_tree_simtrack_genVertexPos_Z);
-   fChain->SetBranchAddress("tree_simtrack_isRecoMatched", &theFormat.tree_simtrack_isRecoMatched, &theFormat.b_tree_simtrack_isRecoMatched);
-   fChain->SetBranchAddress("tree_simtrack_pca_dxy", &theFormat.tree_simtrack_pca_dxy, &theFormat.b_tree_simtrack_pca_dxy);
-   fChain->SetBranchAddress("tree_simtrack_pca_dz", &theFormat.tree_simtrack_pca_dz, &theFormat.b_tree_simtrack_pca_dz);
-   fChain->SetBranchAddress("tree_simtrack_trkIdx", &theFormat.tree_simtrack_trkIdx, &theFormat.b_tree_simtrack_trkIdx);
+   //fChain->SetBranchAddress("tree_track_MVAval_FromDispTop", //&theFormat.tree_track_MVAval_FromDispTop, &theFormat.b_tree_track_MVAval_FromDispTop);
+  // fChain->SetBranchAddress("tree_secondaryVtx_X", &theFormat.tree_secondaryVtx_X, //&theFormat.b_tree_secondaryVtx_X);
+  // fChain->SetBranchAddress("tree_secondaryVtx_Y", &theFormat.tree_secondaryVtx_Y, &theFormat.b_tree_secondaryVtx_Y);
+  // fChain->SetBranchAddress("tree_secondaryVtx_Z", &theFormat.tree_secondaryVtx_Z, &theFormat.b_tree_secondaryVtx_Z);
+   //fChain->SetBranchAddress("tree_secondaryVtx_diff_X", &theFormat.tree_secondaryVtx_diff_X, &theFormat.b_tree_secondaryVtx_diff_X);
+  // fChain->SetBranchAddress("tree_secondaryVtx_diff_Y", &theFormat.tree_secondaryVtx_diff_Y, &theFormat.b_tree_secondaryVtx_diff_Y);
+  // fChain->SetBranchAddress("tree_secondaryVtx_diff_Z", &theFormat.tree_secondaryVtx_diff_Z, &theFormat.b_tree_secondaryVtx_diff_Z);
+   //fChain->SetBranchAddress("tree_secondaryVtx_nTracks", &theFormat.tree_secondaryVtx_nTracks, &theFormat.b_tree_secondaryVtx_nTracks);
+  // fChain->SetBranchAddress("tree_secondaryVtx_isValid", &theFormat.tree_secondaryVtx_isValid, &theFormat.b_tree_secondaryVtx_isValid);
+   //fChain->SetBranchAddress("tree_secondaryVtx_NChi2", &theFormat.tree_secondaryVtx_NChi2, &theFormat.b_tree_secondaryVtx_NChi2);
+  // fChain->SetBranchAddress("tree_secondaryVtx_iterative_X", &theFormat.tree_secondaryVtx_iterative_X, &theFormat.b_tree_secondaryVtx_iterative_X);
+   //fChain->SetBranchAddress("tree_secondaryVtx_iterative_Y", &theFormat.tree_secondaryVtx_iterative_Y, &theFormat.b_tree_secondaryVtx_iterative_Y);
+  // fChain->SetBranchAddress("tree_secondaryVtx_iterative_Z", &theFormat.tree_secondaryVtx_iterative_Z, &theFormat.b_tree_secondaryVtx_iterative_Z);
+  // fChain->SetBranchAddress("tree_secondaryVtx_iterative_nTracks", &theFormat.tree_secondaryVtx_iterative_nTracks, &theFormat.b_tree_secondaryVtx_iterative_nTracks);
+  // fChain->SetBranchAddress("tree_secondaryVtx_iterative_NChi2", &theFormat.tree_secondaryVtx_iterative_NChi2, &theFormat.b_tree_secondaryVtx_iterative_NChi2);
+  // fChain->SetBranchAddress("tree_secondaryVtx_iterative_isSelected", &theFormat.tree_secondaryVtx_iterative_isSelected, &theFormat.b_tree_secondaryVtx_iterative_isSelected);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_charge", &theFormat.tree_simtrack_simtrack_charge, &theFormat.b_tree_simtrack_simtrack_charge);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_pt", &theFormat.tree_simtrack_simtrack_pt, &theFormat.b_tree_simtrack_simtrack_pt);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_eta", &theFormat.tree_simtrack_simtrack_eta, &theFormat.b_tree_simtrack_simtrack_eta);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_phi", &theFormat.tree_simtrack_simtrack_phi, &theFormat.b_tree_simtrack_simtrack_phi);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_longLived", &theFormat.tree_simtrack_simtrack_longLived, &theFormat.b_tree_simtrack_simtrack_longLived);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_pdgId", &theFormat.tree_simtrack_simtrack_pdgId, &theFormat.b_tree_simtrack_simtrack_pdgId);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_mass", &theFormat.tree_simtrack_simtrack_mass, &theFormat.b_tree_simtrack_simtrack_mass);
+  // fChain->SetBranchAddress("tree_simtrack_simtrack_status", &theFormat.tree_simtrack_simtrack_status, &theFormat.b_tree_simtrack_simtrack_status);
+  // fChain->SetBranchAddress("tree_simtrack_genVertexPos_X", &theFormat.tree_simtrack_genVertexPos_X, &theFormat.b_tree_simtrack_genVertexPos_X);
+  // fChain->SetBranchAddress("tree_simtrack_genVertexPos_Y", &theFormat.tree_simtrack_genVertexPos_Y, &theFormat.b_tree_simtrack_genVertexPos_Y);
+   //fChain->SetBranchAddress("tree_simtrack_genVertexPos_Z", &theFormat.tree_simtrack_genVertexPos_Z, &theFormat.b_tree_simtrack_genVertexPos_Z);
+   //fChain->SetBranchAddress("tree_simtrack_isRecoMatched", &theFormat.tree_simtrack_isRecoMatched, &theFormat.b_tree_simtrack_isRecoMatched);
+  // fChain->SetBranchAddress("tree_simtrack_pca_dxy", &theFormat.tree_simtrack_pca_dxy, &theFormat.b_tree_simtrack_pca_dxy);
+  // fChain->SetBranchAddress("tree_simtrack_pca_dz", &theFormat.tree_simtrack_pca_dz, &theFormat.b_tree_simtrack_pca_dz);
+  // fChain->SetBranchAddress("tree_simtrack_trkIdx", &theFormat.tree_simtrack_trkIdx, &theFormat.b_tree_simtrack_trkIdx);
    fChain->SetBranchAddress("tree_AK4Slimmedjet_E", &theFormat.tree_AK4Slimmedjet_E, &theFormat.b_tree_AK4Slimmedjet_E);
    fChain->SetBranchAddress("tree_AK4Slimmedjet_pt", &theFormat.tree_AK4Slimmedjet_pt, &theFormat.b_tree_AK4Slimmedjet_pt);
    fChain->SetBranchAddress("tree_AK4Slimmedjet_eta", &theFormat.tree_AK4Slimmedjet_eta, &theFormat.b_tree_AK4Slimmedjet_eta);
@@ -609,6 +620,9 @@ void TreeReader::Init(TTree *tree)
    fChain->SetBranchAddress("tree_slimmedmuon_CutBasedIdMedium", &theFormat.tree_slimmedmuon_CutBasedIdMedium, &theFormat.b_tree_slimmedmuon_CutBasedIdMedium);
    fChain->SetBranchAddress("tree_slimmedmuon_CutBasedIdMediumPrompt", &theFormat.tree_slimmedmuon_CutBasedIdMediumPrompt, &theFormat.b_tree_slimmedmuon_CutBasedIdMediumPrompt);
    fChain->SetBranchAddress("tree_slimmedmuon_CutBasedIdTight", &theFormat.tree_slimmedmuon_CutBasedIdTight, &theFormat.b_tree_slimmedmuon_CutBasedIdTight);
+
+   //Added by Paul, not sure about it 
+   //fChain->SetBranchAddress("tree_Hemi_Strack_dR", &theFormat.tree_Hemi_Strack_dR, &theFormat.b_tree_Hemi_Strack_dR);
    Notify();
 }
 
@@ -644,9 +658,13 @@ void TreeReader::LoadTreeSizes(TreeFormat theFormat){
    muon_size      = theFormat.tree_slimmedmuon_pt->size();
    track_size     = theFormat.tree_track_pt->size();
    PV_size        = theFormat.tree_vtx_PosX->size();
-   SV_size        = theFormat.tree_secondaryVtx_X->size();
-   PFJet_size     = theFormat.tree_AK4Slimmedjet_pt->size();
+   //SV_size        = theFormat.tree_secondaryVtx_X->size();
+   //PFJet_size     = theFormat.tree_AK4Slimmedjet_pt->size();
 }
 
+void TreeReader::LoadPFJetSize(TreeFormat theFormat)
+{
+	PFJet_size = theFormat.tree_AK4Slimmedjet_pt->size();
+}
 
 #endif // #ifdef TreeReader_cxx

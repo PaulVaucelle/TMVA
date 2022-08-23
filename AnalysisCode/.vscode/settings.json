@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "test_TMVA.C": "cpp",
-        "TMVAPaul.C": "cpp"
+        "TMVAPaul.C": "cpp",
+        "LLTopAna(1).C": "cpp"
     }
 }

@@ -77,7 +77,7 @@ class Track {
         int     reco08Jet_idx()                {return *_track_reco08Jet_idx;};
         int     recoCaloJet_idx()              {return *_track_recoCaloJet_idx;};
         double  MVAval_FromDispTop()           {return *_track_MVAval_FromDispTop;};
- 
+        float  dR()                            {return *_Hemi_Strack_dR;};
         void read(int theIdx, TreeFormat * theContainer);
 
     protected:
@@ -146,6 +146,7 @@ class Track {
         int   *_track_reco08Jet_idx;
         int   *_track_recoCaloJet_idx;
         double *_track_MVAval_FromDispTop;
+        float *_Hemi_Strack_dR;
 };
 
 #endif
