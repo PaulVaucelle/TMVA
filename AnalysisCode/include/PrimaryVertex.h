@@ -6,7 +6,7 @@
 
 //#include "include/TreeFormat.h"
 #include "TreeFormat.h"
-
+// #include "TreeFormatMINIAOD.h"
 class PrimaryVertex {
 
     public:
@@ -15,27 +15,36 @@ class PrimaryVertex {
         virtual ~PrimaryVertex();
         //int ID()                                         {return _ID;};
         int idx()           {return _idx;};
-        float  x()          {return *_vtx_PosX;};
-        float  y()          {return *_vtx_PosY;};
-        float  z()          {return *_vtx_PosZ;};
-        float  normChi2()   {return *_vtx_NChi2;};
-        float  xErr()       {return *_vtx_PosXError;};
-        float  yErr()       {return *_vtx_PosYError;};
-        float  zErr()       {return *_vtx_PosZError;};
 
         void read(int theIdx, TreeFormat * theContainer);
+        // void read(int theIdx, TreeFormatMINIAOD * theContainer);
+
+
+        // float  mini_x()          {return *_PV_x;};
+        // float  mini_y()          {return *_PV_y;};
+        // float  mini_z()          {return *_PV_z;};
+        // float  mini_normChi2()   {return *_PV_NChi2;};
+        // float  mini_zErr()       {return *_PV_ez;};
+        float  mini_x()          {return _PV_x;};
+        float  mini_y()          {return _PV_y;};
+        float  mini_z()          {return _PV_z;};
+        float  mini_normChi2()   {return _PV_NChi2;};
+        float  mini_zErr()       {return _PV_ez;};
 
     protected:
         //int _ID;
         int     _idx;
-        float   *_vtx_PosX;
-        float   *_vtx_PosY;
-        float   *_vtx_PosZ;
-        float   *_vtx_NChi2;
-        float   *_vtx_PosXError;
-        float   *_vtx_PosYError;
-        float   *_vtx_PosZError;
-        
+
+        // float   *_PV_x;
+        // float   *_PV_y;
+        // float   *_PV_z;
+        // float   *_PV_NChi2;
+        // float   *_PV_ez;
+        float   _PV_x;
+        float   _PV_y;
+        float   _PV_z;
+        float   _PV_NChi2;
+        float   _PV_ez;
 
 };
 
