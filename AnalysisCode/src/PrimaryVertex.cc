@@ -13,18 +13,17 @@ PrimaryVertex::~PrimaryVertex()
 void PrimaryVertex::read(int theIdx, TreeFormat * theContainer)
 {
     _idx = theIdx;
-
-
-    //_muon_pt=theContainer->tree_muon_pt->at(_idx) ;
-     _vtx_PosX     =&theContainer->tree_vtx_PosX->at(_idx) ;
-     _vtx_PosY     =&theContainer->tree_vtx_PosY->at(_idx) ;
-     _vtx_PosZ     =&theContainer->tree_vtx_PosZ->at(_idx) ;
-     _vtx_NChi2    =&theContainer->tree_vtx_NChi2->at(_idx) ;
-     _vtx_PosXError=&theContainer->tree_vtx_PosXError->at(_idx) ;
-     _vtx_PosYError=&theContainer->tree_vtx_PosYError->at(_idx) ;
-     _vtx_PosZError=&theContainer->tree_vtx_PosZError->at(_idx) ;
      
-    
+    // _PV_x = &theContainer->tree_PV_x->at(_idx);
+    // _PV_y = &theContainer->tree_PV_y->at(_idx);
+    // _PV_z = &theContainer->tree_PV_z->at(_idx);
+    //     _PV_NChi2 = &theContainer->tree_PV_NChi2->at(_idx);
+    // _PV_ez = &theContainer->tree_PV_ez->at(_idx);
+        _PV_x = theContainer->tree_PV_x;
+    _PV_y = theContainer->tree_PV_y;
+    _PV_z = theContainer->tree_PV_z;
+    _PV_NChi2 = theContainer->tree_PV_NChi2;
+    _PV_ez = theContainer->tree_PV_ez;
 
 }
 
