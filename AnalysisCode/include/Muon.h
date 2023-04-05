@@ -6,7 +6,6 @@
 
 //#include "include/TreeFormat.h"
 #include "TreeFormat.h"
-
 class Muon {
 
     public:
@@ -15,63 +14,48 @@ class Muon {
         virtual ~Muon();
         //int ID()                                         {return _ID;};
         int idx()          {return _idx;};
-        float pt()         {return *_slimmedmuon_pt;};
-        float eta()        {return *_slimmedmuon_eta;};
-        float phi()        {return *_slimmedmuon_phi;};
-        float vx()         {return *_slimmedmuon_vx;};
-        float vy()         {return *_slimmedmuon_vy;};
-        float vz()         {return *_slimmedmuon_vz;};
-        float energy()     {return *_slimmedmuon_energy;};
-        float dxy()        {return *_slimmedmuon_dxy;};
-        float dxyError()   {return *_slimmedmuon_dxyError;};
-        float dz()         {return *_slimmedmuon_dz;};
-        float dzError()    {return *_slimmedmuon_dzError;};
-        float charge()     {return *_slimmedmuon_charge;};
-        bool  PFisoVeryTight()     {return _slimmedmuon_PFisoVeryTight;};
-        bool  PFisoTight()         {return _slimmedmuon_PFisoTight;};
-        bool  PFisoMedium()        {return _slimmedmuon_PFisoMedium;};
-        bool  PFisoLoose()         {return _slimmedmuon_PFisoLoose;};
-        bool  MVAisoLoose()        {return _slimmedmuon_MVAisoLoose;};
-        bool  MVAisoMedium()       {return _slimmedmuon_MVAisoMedium;};
-        bool  MVAisoTight()        {return _slimmedmuon_MVAisoTight;};
-        bool  isGlobalMuon()       {return _slimmedmuon_isGlobalMuon;};
-        bool  isStandAloneMuon()   {return _slimmedmuon_isStandAloneMuon;};
-        bool  CutBasedIdLoose()    {return _slimmedmuon_CutBasedIdLoose;};
-        bool  CutBasedIdMedium()   {return _slimmedmuon_CutBasedIdMedium;};
-        bool  CutBasedIdMediumPrompt()   {return _slimmedmuon_CutBasedIdMediumPrompt;};
-        bool  CutBasedIdTight()          {return _slimmedmuon_CutBasedIdTight;};
+
+//-----------------------------------------------------------
+
+        float mini_pt()         {return *_muon_pt;};
+        float mini_eta()        {return *_muon_eta;};
+        float mini_phi()        {return *_muon_phi;};
+        float mini_vx()         {return *_muon_x;};
+        float mini_vy()         {return *_muon_y;};
+        float mini_vz()         {return *_muon_z;};
+        float mini_energy()     {return *_muon_energy;};
+        float mini_dxy()        {return *_muon_dxy;};
+        float mini_dxyError()   {return *_muon_dxyError;};
+        float mini_dz()         {return *_muon_dz;};
+        float mini_dzError()    {return *_muon_dzError;};
+        int mini_charge()       {return *_muon_charge;};
+        bool  mini_isLoose()        {return _muon_isLoose;};
+        bool  mini_isTight()        {return _muon_isTight;};
+        bool  mini_isGlobal()       {return _muon_isGlobal;};
+        float mini_isoR3()    {return *_muon_isoR3;};
 
         void read(int theIdx, TreeFormat * theContainer);
-
+        // void read(int theIdx, TreeFormatMINIAOD * theContainer);
     protected:
         //int _ID;
         int     _idx;
-        float   * _slimmedmuon_pt;
-        float   * _slimmedmuon_eta;
-        float   * _slimmedmuon_phi;
-        float   * _slimmedmuon_vx;
-        float   * _slimmedmuon_vy;
-        float   * _slimmedmuon_vz;
-        float   * _slimmedmuon_energy;
-        float   * _slimmedmuon_dxy;
-        float   * _slimmedmuon_dxyError;
-        float   * _slimmedmuon_dz;
-        float   * _slimmedmuon_dzError;
-        float   * _slimmedmuon_charge;
-        bool     _slimmedmuon_PFisoVeryTight;
-        bool     _slimmedmuon_PFisoTight;
-        bool     _slimmedmuon_PFisoMedium;
-        bool     _slimmedmuon_PFisoLoose;
-        bool     _slimmedmuon_MVAisoLoose;
-        bool     _slimmedmuon_MVAisoMedium;
-        bool     _slimmedmuon_MVAisoTight;
-        bool     _slimmedmuon_isGlobalMuon;
-        bool     _slimmedmuon_isStandAloneMuon;
-        bool     _slimmedmuon_CutBasedIdLoose;
-        bool     _slimmedmuon_CutBasedIdMedium;
-        bool     _slimmedmuon_CutBasedIdMediumPrompt;
-        bool     _slimmedmuon_CutBasedIdTight;
 
+        float  *_muon_pt;
+        float *_muon_eta;
+        float *_muon_phi;
+        float *_muon_x;
+        float *_muon_y;
+        float  *_muon_z;
+        float  *_muon_energy;
+        float *_muon_dxy;
+        float  *_muon_dxyError;
+        float *_muon_dz;
+        float  *_muon_dzError;
+        int  *_muon_charge;
+        bool  _muon_isLoose;
+        bool   _muon_isTight;
+        bool   _muon_isGlobal;
+        float *_muon_isoR3;
 };
 
 #endif
