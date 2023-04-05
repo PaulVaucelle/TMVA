@@ -14,32 +14,22 @@ void Muon::read(int theIdx, TreeFormat * theContainer)
 {
     _idx = theIdx;
 
-
-    _slimmedmuon_pt                      =&theContainer->tree_slimmedmuon_pt->at(_idx) ;
-    _slimmedmuon_eta                     =&theContainer->tree_slimmedmuon_eta->at(_idx) ;
-    _slimmedmuon_phi                     =&theContainer->tree_slimmedmuon_phi->at(_idx);
-    _slimmedmuon_vx                      =&theContainer->tree_slimmedmuon_vx->at(_idx);
-    _slimmedmuon_vy                      =&theContainer->tree_slimmedmuon_vy->at(_idx);
-    _slimmedmuon_vz                      =&theContainer->tree_slimmedmuon_vz->at(_idx);
-    _slimmedmuon_energy                  =&theContainer->tree_slimmedmuon_energy->at(_idx);
-    _slimmedmuon_dxy                     =&theContainer->tree_slimmedmuon_dxy->at(_idx);
-    _slimmedmuon_dxyError                =&theContainer->tree_slimmedmuon_dxyError->at(_idx);
-    _slimmedmuon_dz                      =&theContainer->tree_slimmedmuon_dz->at(_idx);
-    _slimmedmuon_dzError                 =&theContainer->tree_slimmedmuon_dzError->at(_idx);
-    _slimmedmuon_charge                  =&theContainer->tree_slimmedmuon_charge->at(_idx);
-    _slimmedmuon_PFisoVeryTight          =theContainer->tree_slimmedmuon_PFisoVeryTight->at(_idx);
-    _slimmedmuon_PFisoTight              =theContainer->tree_slimmedmuon_PFisoTight->at(_idx);
-    _slimmedmuon_PFisoMedium             =theContainer->tree_slimmedmuon_PFisoMedium->at(_idx);
-    _slimmedmuon_PFisoLoose              =theContainer->tree_slimmedmuon_PFisoLoose->at(_idx);
-    _slimmedmuon_MVAisoLoose             =theContainer->tree_slimmedmuon_MVAisoLoose->at(_idx);
-    _slimmedmuon_MVAisoMedium            =theContainer->tree_slimmedmuon_MVAisoMedium->at(_idx);
-    _slimmedmuon_MVAisoTight             =theContainer->tree_slimmedmuon_MVAisoTight->at(_idx);
-    _slimmedmuon_isGlobalMuon            =theContainer->tree_slimmedmuon_isGlobalMuon->at(_idx);
-    _slimmedmuon_isStandAloneMuon        =theContainer->tree_slimmedmuon_isStandAloneMuon->at(_idx);
-    _slimmedmuon_CutBasedIdLoose         =theContainer->tree_slimmedmuon_CutBasedIdLoose->at(_idx);
-    _slimmedmuon_CutBasedIdMedium        =theContainer->tree_slimmedmuon_CutBasedIdMedium->at(_idx);
-    _slimmedmuon_CutBasedIdMediumPrompt  =theContainer->tree_slimmedmuon_CutBasedIdMediumPrompt->at(_idx);
-    _slimmedmuon_CutBasedIdTight         =theContainer->tree_slimmedmuon_CutBasedIdTight->at(_idx);
+    _muon_pt = &theContainer->tree_muon_pt->at(_idx);
+    _muon_eta=&theContainer->tree_muon_eta->at(_idx);
+    _muon_phi=&theContainer->tree_muon_phi->at(_idx);
+    _muon_x=&theContainer->tree_muon_x->at(_idx);
+    _muon_y=&theContainer->tree_muon_y->at(_idx);
+    _muon_z=&theContainer->tree_muon_z->at(_idx);
+    _muon_energy=&theContainer->tree_muon_energy->at(_idx);
+    _muon_dxy=&theContainer->tree_muon_dxy->at(_idx);
+    _muon_dxyError=&theContainer->tree_muon_dxyError->at(_idx);
+    _muon_dz=&theContainer->tree_muon_dz->at(_idx);
+    _muon_dzError=&theContainer->tree_muon_dzError->at(_idx);
+    _muon_charge=&theContainer->tree_muon_charge->at(_idx);
+    _muon_isLoose=theContainer->tree_muon_isLoose->at(_idx);
+    _muon_isTight=theContainer->tree_muon_isTight->at(_idx);
+    _muon_isGlobal=theContainer->tree_muon_isGlobal->at(_idx);
+    _muon_isoR3 = &theContainer->tree_muon_isoR3->at(_idx);
 
 }
 
